@@ -1,0 +1,39 @@
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad
+import os
+
+def encrypt_image(input_file, key, output_file, iv_file):
+    with open(input_file, 'rb') as file:
+        image_data = file.read()
+
+    # Generate a random Initialization Vector (IV)
+    iv = os.urandom(16)
+
+    # Create an AES cipher object in CBC mode
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+
+    # Pad the image data to match AES block size
+    padded_data = pad(image_data, AES.block_size)
+
+    # Encrypt the padded data
+    encrypted_data = cipher.encrypt(padded_data)
+
+    # Save the encrypted image
+    with open(output_file, 'wb') as enc_file:
+        enc_file.write(encrypted_data)
+
+    # Save the IV in a separate file
+    with open(iv_file, 'wb') as iv_out:
+        iv_out.write(iv)
+
+    print(f"Encryption complete. Encrypted image saved to {output_file}")
+    print(f"IV saved to {iv_file}")
+
+# User configuration
+input_image = "original_image.jpg"  # Input image file
+encrypted_image = "encrypted_image.enc"  # Encrypted output file
+iv_file = "iv.bin"  # File to save the IV
+key = b'ThisIsASecretKey'  # 16-byte AES key (fixed)
+
+# Encrypt the image
+encrypt_image(input_image, key, encrypted_image, iv_file)
