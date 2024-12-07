@@ -1,0 +1,15 @@
+from PIL import Image, ImageFilter
+
+# Load the image
+image = Image.open("D:/M K/Studies/Privacy and Sec in Cloud/image obfuscation.png")
+
+# Convert RGBA to RGB (JPEG does not support RGBA)
+if image.mode == 'RGBA':
+    image = image.convert('RGB')
+
+# Apply a blur filter
+blurred_image = image.filter(ImageFilter.GaussianBlur(10))
+
+# Save the obfuscated image
+blurred_image.save("D:/M K/Studies/Privacy and Sec in Cloud/obfuscated_image.jpg")
+print("Obfuscated image saved as 'obfuscated_image.jpg'")
