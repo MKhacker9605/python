@@ -1,0 +1,26 @@
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad, unpad
+import os
+
+def encrypt_file(user, filename, data, encryption_key):
+    iv = os.urandom(16)
+    cipher = AES.new(encryption_key, AES.MODE_CBC, iv)
+    padded_data = pad(data.encode(), AES.block_size)
+    encrypted_data = cipher.encrypt(padded_data)
+    print(f"Encrypted data for {filename} by {user}: {encrypted_data.hex()}")
+    print(f"User {user} uploaded {filename} (encrypted).")
+    return encrypted_data, iv
+
+def decrypt_file(user, filename, encrypted_data, iv, encryption_key):
+    cipher = AES.new(encryption_key, AES.MODE_CBC, iv)
+    decrypted_data = unpad(cipher.decrypt(encrypted_data), AES.block_size).decode()
+    print(f"User {user} downloaded {filename}. Content: {decrypted_data}")
+    return decrypted_data
+
+encryption_key = b'ThisIsASecretKey'
+user = "User1"
+filename = "file1.txt"
+file_data = "Sensitive data to share securely."
+
+encrypted_data, iv = encrypt_file(user, filename, file_data, encryption_key)
+decrypt_file(user, filename, encrypted_data, iv, encryption_key)
