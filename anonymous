@@ -1,0 +1,25 @@
+import pandas as pd
+
+data = pd.DataFrame({
+    'Name': ['John Doe', 'Jane Smith', 'Michael Johnson'],
+    'Email': ['johndoe@example.com', 'janesmith@example.com', 'michaeljohnson@example.com'],
+    'Age': [25, 30, 35]
+})
+
+data['Name'] = 'XXXXXXXXXX'
+data['Email'] = 'xxxxxxxxxx'
+
+print("Masked Dataset:")
+print(data)
+
+data = pd.DataFrame({
+    'Name': ['John Doe', 'Jane Smith', 'Michael Johnson'],
+    'Zip Code': ['12345', '67890', '54321'],
+    'Age': [25, 30, 35]
+})
+
+data['Name'] = 'Anonymous'
+data['Zip Code'] = 'XXXXX'
+
+print("\nk-Anonymized Dataset:")
+print(data)
